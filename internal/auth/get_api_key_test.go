@@ -1,28 +1,27 @@
 package auth
 
 import (
-	"testing"
-	"net/http"
 	"errors"
+	"net/http"
+	"testing"
 )
 
-
 func TestGetAPIKey(t *testing.T) {
-	tests := map[string] struct {
+	tests := map[string]struct {
 		input http.Header
-		want error
+		want  error
 	}{
 		"authPresent": {
 			input: http.Header{"Host": []string{"notely"}, "Accept": []string{"application/json"}, "Authorization": []string{"ApiKey ashnjasdkfj3asdf35d"}},
-			want: nil,
+			want:  nil,
 		},
 		"authMissing": {
 			input: http.Header{"Host": []string{"notely"}, "User-Agent": []string{"curl/8.6.6"}, "Accept": []string{"application/json"}},
-			want: ErrNoAuthHeaderIncluded,
+			want:  ErrNoAuthHeaderIncluded,
 		},
 		"authWrong": {
 			input: http.Header{"Host": []string{"notely"}, "User-Agent": []string{"curl/8.6.6"}, "Accept": []string{"application/json"}, "Authorization": []string{"Bearer adf3jd5"}},
-			want: ErrMalformedAuthHeader,
+			want:  ErrMalformedAuthHeader,
 		},
 	}
 
@@ -35,6 +34,3 @@ func TestGetAPIKey(t *testing.T) {
 		})
 	}
 }
-
-
-

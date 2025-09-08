@@ -1,4 +1,4 @@
-![alt badge](https://github.com/JA50N14/learn-cicd-starter/actions/workflows/ci.yml/badge.svg)
+![Workflow Badge](https://github.com/JA50N14/learn-cicd-starter/actions/workflows/ci.yml/badge.svg)
 
 # learn-cicd-starter (Notely)
 

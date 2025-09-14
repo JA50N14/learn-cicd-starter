@@ -1,0 +1,41 @@
+[1mdiff --git a/.github/workflows/cd.yml b/.github/workflows/cd.yml[m
+[1mindex fb1beaf..bbb3e76 100644[m
+[1m--- a/.github/workflows/cd.yml[m
+[1m+++ b/.github/workflows/cd.yml[m
+[36m@@ -9,6 +9,9 @@[m [mjobs:[m
+     name: Deploy[m
+     runs-on: ubuntu-latest[m
+ [m
+[32m+[m[32m    env:[m
+[32m+[m[32m      DATABASE_URL: ${{ secrets.DATABASE_URL }}[m
+[32m+[m
+     permissions:[m
+       contents: read[m
+       id-token: write[m
+[36m@@ -16,12 +19,15 @@[m [mjobs:[m
+     steps:[m
+       - name: Check out code[m
+         uses: actions/checkout@v4[m
+[31m-[m
+[32m+[m[41m      [m
+       - name: Set up Go[m
+         uses: actions/setup-go@v5[m
+         with:[m
+           go-version: "1.23.0"[m
+         [m
+[32m+[m[32m      - name: Set up Goose[m
+[32m+[m[32m        run: go install github.com/pressly/goose/v3/cmd/goose@latest[m
+[32m+[m[41m    [m
+       - name: Build app[m
+         run: ./scripts/buildprod.sh[m
+ [m
+[36m@@ -41,6 +47,9 @@[m [mjobs:[m
+       - name: 'Build Docker Image'[m
+         run: gcloud builds submit --tag us-central1-docker.pkg.dev/notely-232323/notely-ar-repo/notely:latest .[m
+ [m
+[32m+[m[32m      - name: 'Database Migration'[m
+[32m+[m[32m        run: ./scripts/migrateup.sh[m
+[32m+[m
+       - name: Deploy to Cloud Run[m
+         run: gcloud run deploy notely --image us-central1-docker.pkg.dev/notely-232323/notely-ar-repo/notely:latest --region us-central1 --allow-unauthenticated --project notely-232323 --max-instances=4[m
+ [m
